@@ -86,4 +86,4 @@ Smart Text Highlighter is built using React and Vite and runs completely on the 
 
 ## 🔗 Live Demo
 
-
+https://smart-text-highlighter-react.vercel.app
