@@ -1,12 +1,26 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
+import { Routes, Route, Navigate } from "react-router-dom";
+import DashboardLayout from "./layout/DashboardLayout";
+import HighlighterLayout from "./layout/HighlighterLayout";
+import HighlighterText from "./pages/HighlighterText";
+import HowItWorks from "./pages/HowItWorks";
+import About from "./pages/About";
+import Help from "./pages/Help";
 
-export default function App() {
+function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Navigate to="/dashboard/highlighter/text" />} />
+
+      <Route path="/dashboard" element={<DashboardLayout />}>
+        <Route path="highlighter" element={<HighlighterLayout />}>
+          <Route path="text" element={<HighlighterText />} />
+          <Route path="how-it-works" element={<HowItWorks />} />
+        </Route>
+
+        <Route path="about" element={<About />} />
+        <Route path="help" element={<Help />} />
+      </Route>
+    </Routes>
   );
 }
+export default App;

@@ -1,22 +1,25 @@
-export default function Results({ highlights }) {
-  if (!highlights.length) return null;
+export default function Results({ highlights, loading, error }) {
+  if (loading) return null;
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(highlights.join("\n"));
-    alert("Copied to clipboard");
-  };
+  if (error) {
+    return <p className="error-text">{error}</p>;
+  }
+
+  if (!highlights.length) {
+    return <p className="muted-text">No highlights generated yet.</p>;
+  }
 
   return (
-    <div className="results">
-      <h3>✨ Essential Insights</h3>
+    <div className="results-card">
+      <h2 className="results-title">Essential Insights</h2>
 
-      <button onClick={handleCopy}>Copy</button>
-
-      {highlights.map((point, i) => (
-        <div key={i} className="highlight-box">
-          {point}
-        </div>
-      ))}
+      <ul className="results-list">
+        {highlights.map((item, idx) => (
+          <li key={idx} className="result-item">
+            {item}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

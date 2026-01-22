@@ -1,65 +1,60 @@
 import { useState } from "react";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export default function useHighlighter() {
   const [loading, setLoading] = useState(false);
   const [highlights, setHighlights] = useState([]);
+  const [status, setStatus] = useState(""); 
 
-  const highlightText = async (text, style) => {
+  const highlightText = async (text) => {
     if (!text.trim()) return;
 
     setLoading(true);
     setHighlights([]);
+    setStatus("Analyzing text...");
 
     try {
-      const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${
-          import.meta.env.VITE_GEMINI_API_KEY
-        }`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contents: [
-              {
-                parts: [
-                  {
-                    text: `
-Summarize the text below into ONLY the most important ideas.
-Rules:
-- Rephrase
-- Max 5 points
-- New line per point
-Text:
-${text}
-                    `
-                  }
-                ]
-              }
-            ]
-          })
-        }
+      const genAI = new GoogleGenerativeAI(
+        import.meta.env.VITE_GEMINI_API_KEY
       );
 
-      const data = await res.json();
-      const geminiText =
-        data?.candidates?.[0]?.content?.parts?.[0]?.text;
+      const model = genAI.getGenerativeModel({
+        model: "models/gemini-2.5-flash",
+      });
 
-      if (!geminiText) return;
+      const result = await model.generateContent(`
+Extract ONLY 5 short, clear points.
+Each point on a new line.
+No headings. No explanations.
 
-      const points = geminiText
+Text:
+${text}
+      `);
+
+      const raw = result?.response?.text?.() || "";
+
+      const points = raw
         .split("\n")
-        .map(p => p.replace(/^[-•*\d.]+\s*/, "").trim())
-        .filter(Boolean)
+        .map(line =>
+          line.replace(/^[-•*\d.]+\s*/, "").trim()
+        )
+        .filter(line => line.length > 10)
         .slice(0, 5);
 
-      setHighlights(points);
+      if (points.length === 0) {
+        setStatus("Couldn’t extract highlights this time. Try again.");
+      } else {
+        setHighlights(points);
+        setStatus("");
+      }
+
     } catch (err) {
-      console.error(err);
-      alert("Gemini API failed");
+      console.warn("Gemini temporary issue:", err);
+      setStatus("AI is busy. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
-  return { loading, highlights, highlightText };
+  return { loading, highlights, status, highlightText };
 }
