@@ -37,33 +37,33 @@ Smart Text Highlighter is built using React and Vite and runs completely on the 
 
 ## 📁 Project Structure
 
-smart-text-highlighter/
-├── node_modules/
-├── public/
-│ ├── data.json
-│ └── vite.svg
-├── src/
-│ ├── assets/
-│ │ └── react.svg
-│ ├── components/
-│ │ ├── Loader.jsx
-│ │ ├── Results.jsx
-│ │ └── TextInput.jsx
-│ ├── hooks/
-│ │ └── useHighlighter.js
-│ ├── pages/
-│ │ └── Home.jsx
-│ ├── styles/
-│ ├── App.jsx
-│ └── main.jsx
-├── .env
-├── .gitignore
-├── eslint.config.js
-├── index.html
-├── package-lock.json
-├── package.json
-├── README.md
-└── vite.config.js
+    smart-text-highlighter/
+    ├── node_modules/
+    ├── public/
+    │ ├── data.json
+    │ └── vite.svg
+    ├── src/
+    │ ├── assets/
+    │ │ └── react.svg
+    │ ├── components/
+    │ │ ├── Loader.jsx
+    │ │ ├── Results.jsx
+    │ │ └── TextInput.jsx
+    │ ├── hooks/
+    │ │ └── useHighlighter.js
+    │ ├── pages/
+    │ │ └── Home.jsx
+    │ ├── styles/
+    │ ├── App.jsx
+    │ └── main.jsx
+    ├── .env
+    ├── .gitignore
+    ├── eslint.config.js
+    ├── index.html
+    ├── package-lock.json
+    ├── package.json
+    ├── README.md
+    └── vite.config.js
 
 ---
 
